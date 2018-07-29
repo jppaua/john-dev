@@ -16,5 +16,9 @@ storage/*.key
 Homestead.yaml
 Homestead.json
 
-# Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
 .rocketeer/
+npm-debug.log*
+.DS_Store
+.idea/
+v8-compile-cache-0/
+07f59f2c-7d94-418a-9d08-11a325a77856.dmp

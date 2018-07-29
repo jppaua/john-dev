@@ -1,0 +1,53 @@
+john-redis:
+  restart: always
+  image: phpdockerio/redis:latest
+  container_name: john-redis
+  ports:
+    - 6379:6379
+
+john-postgres:
+  restart: always
+  image: postgres:9.6
+  container_name: john-postgres
+  ports:
+    - 5432:5432
+  environment:
+    - POSTGRES_USER=john
+    - POSTGRES_PASSWORD=password
+    - POSTGRES_DB=john
+
+john-php-fpm:
+  restart: always
+  build: .
+  dockerfile: php-fpm/Dockerfile
+  container_name: john-php-fpm
+  volumes:
+    - ../.:/var/www/john
+  links:
+    - john-postgres
+    - john-redis
+
+john-webserver:
+  restart: always
+  image: lagun4ik/nginx-pagespeed
+  container_name: john-webserver
+  volumes:
+    - ../.:/var/www/john
+    - ./nginx/default.dev.conf:/etc/nginx/conf.d/default.conf
+  ports:
+   - 80:80
+   - 443:443
+  links:
+   - john-php-fpm
+
+john-dev:
+  restart: always
+  build: .
+  dockerfile: dev/Dockerfile
+  container_name: john-dev
+  volumes:
+    - ../.:/var/www/john
+  links:
+    - john-webserver
+    - john-postgres
+    - john-redis
