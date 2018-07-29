@@ -1,4 +1,3 @@
-x# john
 
 ### Docker Installation
 Install docker from https://docs.docker.com/install/
@@ -71,12 +70,6 @@ Then cd into the workspace folder and run:
 
 ---
 
-### Accessing the local website
-The website should be accessible by the IP of the docker-machine, to find that IP you can run `docker-machine ip` from outside of the container (e.g. in your computers native OS). If you are running on MacOS you may be running the containers on localhost. 
-If you're on windows 7 the IP is in the Vagrantfile as 192.168.33.40.
-
----
-
 ### Commonly used commands
 `php artisan migrate`  
 To initialize the database tables  
@@ -95,3 +88,6 @@ To run some terminal-like tool to have direct access to the web server to run co
 
 `tail -n 50 storage/logs/laravel.log`  
 Access the recent error logs, increase n as needed
+
+`php artisan make:test`
+makes a test file 
