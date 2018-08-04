@@ -91,3 +91,12 @@ Access the recent error logs, increase n as needed
 
 `php artisan make:test`
 makes a test file 
+
+`git add {filename}`
+`git add .` (use with caution)
+`git commit -m "MESSAGE"`
+`git push origin master`
+
+
+
+if installing something becomes an issue, get rid of everything related to the installation and start again following a proper guide.
