@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    use RecordsActivity;
+    use Votable, RecordsActivity;
 
     protected $guarded = [];
     protected $with = ['creator', 'channel'];
@@ -49,8 +49,22 @@ class Thread extends Model
 
     public function addReply($reply)
     {
-        $this->replies()->create($reply);
+        return $this->replies()->create($reply);
     }
+
+    // public function votes()
+    // {
+    //     return $this->morphMany(Vote::class, 'voted');
+    // }
+
+    // public function vote()
+    // {
+    //     $attributes = ['user_id' => auth()->id()];
+
+    //     if (! $this->votes()->where($attributes)->exists()) {
+    //         return $this->votes()->create($attributes);
+    //     }
+    // }
 
     public function scopeFilter($query, $filters)
     {

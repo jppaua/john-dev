@@ -16,7 +16,7 @@ trait RecordsActivity
     {
         if (auth()->guest()) return;
 
-        foreach (static::gerActivitiesToRecord() as $event) {
+        foreach (static::getActivitiesToRecord() as $event) {
             static::$event(function ($model) use ($event) {
                 $model->recordActivity($event);
             });
@@ -26,7 +26,7 @@ trait RecordsActivity
         });
     }
 
-    protected static function gerActivitiesToRecord()
+    protected static function getActivitiesToRecord()
     {
         return['created'];
     }

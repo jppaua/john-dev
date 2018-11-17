@@ -11,6 +11,8 @@
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-    .version()
-   .sass('resources/assets/sass/app.scss', 'public/css');
+    mix.js('resources/assets/js/app.js', 'public/js')
+            .version()
+        .sass('resources/assets/sass/app.scss', 'public/css')
+        .copy('node_modules/bootstrap-sass/assets/fonts/bootstrap/', 'public/fonts/');
+
