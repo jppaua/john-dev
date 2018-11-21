@@ -6,7 +6,7 @@ use App\Vote;
 use App\Thread;
 use Illuminate\Http\Request;
 
-class VotesController extends Controller
+class UpVotesController extends Controller
 {
 	/**
      * VotesController constructor.
@@ -18,8 +18,10 @@ class VotesController extends Controller
 
     public function store($channelId, Thread $thread)
     {
-    	return $thread->vote();
+    	return $thread->upVote();
     }
+
+
 
     public function destroy($channelId, Thread $thread)
     {

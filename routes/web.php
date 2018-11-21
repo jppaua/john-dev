@@ -39,7 +39,11 @@ Route::get('threads/create', 'ThreadsController@create');
 Route::get('threads/{channel}/{thread}', 'ThreadsController@show');
 Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy');
 
-Route::post('/threads/{channel}/{thread}/votes', 'VotesController@store');
+Route::post('/threads/{channel}/{thread}/upVote', 'UpVotesController@store');
+Route::delete('/threads/{channel}/{thread}/upVote', 'UpVotesController@destroy');
+
+Route::post('/threads/{channel}/{thread}/downVote', 'DownVotesController@store');
+Route::delete('/threads/{channel}/{thread}/downVote', 'DownVotesController@destroy');
 
 Route::post('threads', 'ThreadsController@store');
 Route::get('threads/{channel}', 'ThreadsController@index');

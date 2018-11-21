@@ -1631,7 +1631,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         classes: function classes() {
-            return ['btn', this.active ? 'btn-primary' : 'btn-default'];
+            return ['btn', this.active ? 'btn-warning' : 'btn-default'];
         },
         endpoint: function endpoint() {
             return '/replies/' + this.reply.id + '/favorites';

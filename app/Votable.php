@@ -19,55 +19,60 @@ trait Votable
         return $this->morphMany(Vote::class, 'voted');
     }
 
-    public function vote()
-    {
-        $attributes = ['user_id' => auth()->id()];
+    // public function vote()
+    // {
+    //     $attributes = ['user_id' => auth()->id()];
 
-        if (!$this->votes()->where($attributes)->exists())
-        {
+    //     if (!$this->votes()->where($attributes)->exists())
+    //     {
+    //         return $this->votes()->create($attributes);
 
-            return $this->upVote();
+    //     } 
+    //     else if ($this->votes()->where(['upvote' => '1'])->exists()) 
+    //     {
 
+    //         $this->votes()->update(['upvote' => '0']);
 
-        } 
-        else 
-        { 
+    //     }
+    //     else if ($this->votes()->where(['upvote' => '0'])->exists())
+    //     {
 
-            return $this->downVote();
-
-        }
-    }
+    //         $this->votes()->update(['upvote' => '1']);
+    //     }
+    // }
 
     public function upVote()
     {
+
         $attributes = ['user_id' => auth()->id()];
 
         if (!$this->votes()->where($attributes)->exists())
         {
-
-            return $this->votes()->create($attributes);
-
-        } 
-        else if ($this->votes->where(['type' => 'down_vote'])->exists()) 
-        {
-
-            return $this->votes->update(['type' => 'up_vote']);
-
+            $this->votes()->create($attributes);
+            $this->votes()->update(['upvote' => '1']);
         }
+        else if ($this->votes()->where(['upvote' => '0'])->exists())
+        {
+            $this->votes()->update(['upvote' => '1']);
+        }
+
     }
 
     public function downVote()
     {
+
         $attributes = ['user_id' => auth()->id()];
 
         if (!$this->votes()->where($attributes)->exists())
         {
-            if ($this->votes->where(['type' => 'up_vote'])->exists()) 
-            {
-               return $this->votes()->create($attributes);
-            }    
+            $this->votes()->create($attributes);
+            $this->votes()->update(['upvote' => '0']);
+        }
+        else if ($this->votes()->where(['upvote' => '1'])->exists())
+        {
+            $this->votes()->update(['upvote' => '0']);
+        }
 
-        } 
     }
 
     public function unVote()
@@ -96,14 +101,15 @@ trait Votable
 
     public function upVoteCount()
     {
-        $attributes = ['type' => 'up_vote'];
-        return $this->votes->where($attributes)->count();
+        $attributes = ['upvote' => '1'];
+        return $this->votes()->where($attributes)->count();
     }
 
     public function downVoteCount()
     {
-        $attributes = ['type' => 'down_vote'];
-        return $this->votes->where($attributes)->count();
+        $attributes = ['upvote' => '0'];
+        return $this->votes()->where($attributes)->count();
     }
 
 }
+//$items
