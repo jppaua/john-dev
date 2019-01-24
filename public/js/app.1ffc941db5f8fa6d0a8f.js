@@ -1893,6 +1893,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.dataSet = data;
             this.items = data.data;
+
+            window.scrollTo(0, 0);
         }
     }
 });
@@ -1998,6 +2000,77 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/SubscribeButton.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	props: ['active'],
+	computed: {
+		classes: function classes() {
+			return ['btn', this.active ? 'btn-primary' : 'btn-default'];
+		}
+	},
+	methods: {
+		subscribe: function subscribe() {
+			axios[this.active ? 'delete' : 'post'](location.pathname + '/subscriptions');
+
+			this.active = !this.active;
+		}
+	}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/UserNotifications.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return { notifications: false };
+	},
+	created: function created() {
+		var _this = this;
+
+		axios.get("/profiles/" + window.App.user.name + "/notifications").then(function (response) {
+			return _this.notifications = response.data;
+		});
+	},
+
+
+	methods: {
+		//"/profiles/{$user->name}/notifications/" . $user->unreadNotifications->first()->id
+		markAsRead: function markAsRead(notification) {
+			axios.delete('/profiles/' + window.App.user.name + '/notifications/' + notification.id);
+		}
+	}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Thread.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2005,13 +2078,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Replies_vue__ = __webpack_require__("./resources/assets/js/components/Replies.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Replies_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Replies_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_SubscribeButton_vue__ = __webpack_require__("./resources/assets/js/components/SubscribeButton.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_SubscribeButton_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_SubscribeButton_vue__);
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['initialRepliesCount'],
 
-    components: { Replies: __WEBPACK_IMPORTED_MODULE_0__components_Replies_vue___default.a },
+    components: { Replies: __WEBPACK_IMPORTED_MODULE_0__components_Replies_vue___default.a, SubscribeButton: __WEBPACK_IMPORTED_MODULE_1__components_SubscribeButton_vue___default.a },
 
     data: function data() {
         return {
@@ -49222,6 +49298,27 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-12f1de8d\"}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/SubscribeButton.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('button', {
+    class: _vm.classes,
+    on: {
+      "click": _vm.subscribe
+    }
+  }, [_vm._v("Subscribe")])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-12f1de8d", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-15877ea1\"}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Flash.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -49262,7 +49359,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "click": _vm.toggle
     }
   }, [_c('span', {
-    staticClass: "fa fa-star"
+    staticClass: "fa fa-star-o"
   }), _vm._v(" "), _c('span', {
     domProps: {
       "textContent": _vm._s(_vm.count)
@@ -49433,15 +49530,22 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return (_vm.shouldPaginate) ? _c('ul', {
-    staticClass: "pagination"
+    staticClass: "pagination",
+    staticStyle: {
+      "margin-top": "16px"
+    }
   }, [_c('li', {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: (_vm.prevUrl),
       expression: "prevUrl"
-    }]
+    }],
+    staticStyle: {
+      "margin-right": "7px"
+    }
   }, [_c('a', {
+    staticClass: "card card-default",
     attrs: {
       "href": "#",
       "aria-label": "Previous",
@@ -49454,6 +49558,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('span', {
+    staticStyle: {
+      "margin-left": "7px",
+      "margin-right": "7px"
+    },
     attrs: {
       "aria-hidden": "true"
     }
@@ -49465,6 +49573,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "nextUrl"
     }]
   }, [_c('a', {
+    staticClass: "card card-default",
     attrs: {
       "href": "#",
       "aria-label": "Next",
@@ -49477,6 +49586,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('span', {
+    staticStyle: {
+      "margin-left": "7px",
+      "margin-right": "7px"
+    },
     attrs: {
       "aria-hidden": "true"
     }
@@ -49527,6 +49640,51 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-ecad1d0e", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-f280e4e4\"}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/UserNotifications.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return (_vm.notifications.length) ? _c('li', {
+    staticClass: "dropdown"
+  }, [_vm._m(0), _vm._v(" "), _c('ul', {
+    staticClass: "dropdown-menu"
+  }, _vm._l((_vm.notifications), function(notification) {
+    return _c('li', [_c('a', {
+      attrs: {
+        "href": notification.data.link
+      },
+      domProps: {
+        "textContent": _vm._s(notification.data.message)
+      },
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.markAsRead(notification)
+        }
+      }
+    })])
+  }))]) : _vm._e()
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('a', {
+    staticClass: "dropdown-toggle",
+    attrs: {
+      "href": "#",
+      "data-toggle": "dropdown"
+    }
+  }, [_c('span', {
+    staticClass: "fa fa-bell"
+  })])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-f280e4e4", module.exports)
   }
 }
 
@@ -60861,6 +61019,8 @@ __webpack_require__("./resources/assets/js/bootstrap.js");
 
 Vue.component('flash', __webpack_require__("./resources/assets/js/components/Flash.vue"));
 Vue.component('paginator', __webpack_require__("./resources/assets/js/components/Paginator.vue"));
+Vue.component('user-notifications', __webpack_require__("./resources/assets/js/components/UserNotifications.vue"));
+
 Vue.component('thread-view', __webpack_require__("./resources/assets/js/pages/Thread.vue"));
 
 var app = new Vue({
@@ -61127,6 +61287,76 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-400f949b", Component.options)
   } else {
     hotAPI.reload("data-v-400f949b", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/SubscribeButton.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/SubscribeButton.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-12f1de8d\"}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/SubscribeButton.vue"),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/var/www/john/resources/assets/js/components/SubscribeButton.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] SubscribeButton.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-12f1de8d", Component.options)
+  } else {
+    hotAPI.reload("data-v-12f1de8d", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/UserNotifications.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/UserNotifications.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-f280e4e4\"}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/UserNotifications.vue"),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/var/www/john/resources/assets/js/components/UserNotifications.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] UserNotifications.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f280e4e4", Component.options)
+  } else {
+    hotAPI.reload("data-v-f280e4e4", Component.options)
   }
 })()}
 

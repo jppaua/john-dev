@@ -54,7 +54,7 @@ class VotesTest extends TestCase
 
         $this->post('/threads/some_channel/' . $thread->id . '/downVote');
 
-        $this->assertCount(1, $thread->votes);
+        $this->assertCount(1, $thread->fresh()->votes);
 
         $this->assertDatabaseHas('votes', ['upvote' => '0']);
 
