@@ -3,7 +3,9 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -34,6 +36,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+
         parent::report($exception);
     }
 
@@ -48,6 +51,26 @@ class Handler extends ExceptionHandler
     {
 //        if (app()->environment() === 'testing') throw $exception;
 
+        if ($exception instanceof ValidationException) {
+            if($request->expectsJson()) {
+                return response('Sorry, validation failed.', 422);
+            }
+            
+        }
+
+        if ($exception instanceof ThrottleException) {
+            return response('You are posting too frequently.', 429);
+        }
+
         return parent::render($request, $exception);
     }
+
+     protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+        return redirect()->guest(route('login'));
+    }
 }
+
